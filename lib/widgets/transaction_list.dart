@@ -10,7 +10,7 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 300,
+      height: 500,
       child: transactions.isEmpty
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -34,41 +34,66 @@ class TransactionList extends StatelessWidget {
           : ListView.builder(
               itemCount: transactions.length,
               itemBuilder: (context, index) => Card(
-                child: Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).primaryColor, width: 2)),
-                      padding: const EdgeInsets.all(10),
+                  child: ListTile(
+                leading: CircleAvatar(
+                  child: Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: FittedBox(
                       child: Text(
-                        '\$${transactions[index].amount.toStringAsFixed(2)}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Theme.of(context).primaryColor),
-                      ),
+                          '\$${transactions[index].amount.toStringAsFixed(2)}'),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          transactions[index].title,
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          DateFormat().format(transactions[index].date),
-                          style: const TextStyle(color: Colors.grey),
-                        ),
-                      ],
-                    )
-                  ],
+                  ),
                 ),
-              ),
+                title: Text(
+                  transactions[index].title,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(
+                  DateFormat().format(transactions[index].date),
+                  style: const TextStyle(color: Colors.grey),
+                ),
+                trailing: Icon(
+                  Icons.delete,
+                  color: Theme.of(context).primaryColorDark,
+                ),
+              )),
             ),
     );
   }
 }
+
+
+// Row(
+//                   children: [
+//                     Container(
+//                       margin: const EdgeInsets.symmetric(
+//                           vertical: 10, horizontal: 20),
+//                       decoration: BoxDecoration(
+//                           border: Border.all(
+//                               color: Theme.of(context).primaryColor, width: 2)),
+//                       padding: const EdgeInsets.all(10),
+//                       child: Text(
+//                         '\$${transactions[index].amount.toStringAsFixed(2)}',
+//                         style: TextStyle(
+//                             fontWeight: FontWeight.bold,
+//                             fontSize: 20,
+//                             color: Theme.of(context).primaryColor),
+//                       ),
+//                     ),
+//                     Column(
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+                        // Text(
+                        //   transactions[index].title,
+                        //   style: const TextStyle(
+                        //       fontSize: 18, fontWeight: FontWeight.bold),
+                        // ),
+//                         Text(
+//                           DateFormat().format(transactions[index].date),
+//                           style: const TextStyle(color: Colors.grey),
+//                         ),
+//                       ],
+//                     )
+//                   ],
+//                 ),
