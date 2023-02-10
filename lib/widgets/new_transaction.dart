@@ -25,6 +25,15 @@ class _NewTransactionState extends State<NewTransaction> {
     Navigator.of(context).pop();
   }
 
+  void _presentDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2023),
+      lastDate: DateTime.now(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -50,7 +59,9 @@ class _NewTransactionState extends State<NewTransaction> {
               children: [
                 Text('No date chosen!'),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _presentDatePicker();
+                  },
                   child: const Text(
                     'Choose date',
                     style: TextStyle(fontWeight: FontWeight.bold),
