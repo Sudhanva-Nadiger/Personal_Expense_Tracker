@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addNewTransaction;
@@ -12,16 +13,17 @@ class NewTransaction extends StatefulWidget {
 class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
   final amountController = TextEditingController();
+  DateTime? selectedDate;
 
   void submitData() {
     final enteredText = titleController.text;
-    if (amountController.text == '') return;
+    if (amountController.text.isEmpty) return;
     final enteredAmount = double.parse(amountController.text);
 
-    if (enteredText.isEmpty || enteredAmount <= 0) {
+    if (enteredText.isEmpty || enteredAmount <= 0 || selectedDate == null) {
       return;
     }
-    widget.addNewTransaction(enteredText, enteredAmount);
+    widget.addNewTransaction(enteredText, enteredAmount, selectedDate!);
     Navigator.of(context).pop();
   }
 
@@ -31,7 +33,13 @@ class _NewTransactionState extends State<NewTransaction> {
       initialDate: DateTime.now(),
       firstDate: DateTime(2023),
       lastDate: DateTime.now(),
-    );
+    ).then((datePicked) {
+      if (datePicked == null) {
+        return;
+      }
+      selectedDate = datePicked;
+      setState(() {});
+    });
   }
 
   @override
@@ -54,20 +62,28 @@ class _NewTransactionState extends State<NewTransaction> {
               keyboardType: TextInputType.number,
               onSubmitted: (_) => submitData(),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text('No date chosen!'),
-                TextButton(
-                  onPressed: () {
-                    _presentDatePicker();
-                  },
-                  child: const Text(
-                    'Choose date',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(selectedDate == null
+                        ? "No date chosen!"
+                        : 'picked date: ${DateFormat.yMd().format(selectedDate!).toString()}'),
                   ),
-                )
-              ],
+                  TextButton(
+                    onPressed: () {
+                      _presentDatePicker();
+                    },
+                    child: const Text(
+                      'Choose date',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ],
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),

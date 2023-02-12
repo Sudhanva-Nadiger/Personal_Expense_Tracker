@@ -4,8 +4,9 @@ import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
-
-  const TransactionList({super.key, required this.transactions});
+  final Function deleteTransaction;
+  const TransactionList(
+      {super.key, required this.transactions, required this.deleteTransaction});
 
   @override
   Widget build(BuildContext context) {
@@ -35,29 +36,32 @@ class TransactionList extends StatelessWidget {
               itemCount: transactions.length,
               itemBuilder: (context, index) => Card(
                   child: ListTile(
-                leading: CircleAvatar(
-                  child: Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: FittedBox(
-                      child: Text(
-                          '\$${transactions[index].amount.toStringAsFixed(2)}'),
-                    ),
-                  ),
-                ),
-                title: Text(
-                  transactions[index].title,
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                subtitle: Text(
-                  DateFormat().format(transactions[index].date),
-                  style: const TextStyle(color: Colors.grey),
-                ),
-                trailing: Icon(
-                  Icons.delete,
-                  color: Theme.of(context).primaryColorDark,
-                ),
-              )),
+                      leading: CircleAvatar(
+                        child: Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: FittedBox(
+                            child: Text(
+                                '\$${transactions[index].amount.toStringAsFixed(2)}'),
+                          ),
+                        ),
+                      ),
+                      title: Text(
+                        transactions[index].title,
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        DateFormat().format(transactions[index].date),
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                      trailing: IconButton(
+                        onPressed: () =>
+                            deleteTransaction(transactions[index].id),
+                        icon: Icon(
+                          Icons.delete,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                      ))),
             ),
     );
   }
